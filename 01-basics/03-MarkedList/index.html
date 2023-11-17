@@ -17,9 +17,7 @@
           <input v-model="search" type="search" />
         </div>
         <ul v-for="email in getNewEmailsArray">
-          <li :class="email.flag === 'marked' ? 'marked' : ''">
-            {{ email.name }}
-          </li>
+          <li :class="{'marked': email.flag === 'marked'}">{{ email.name }}</li>
         </ul>
       </div>
     </div>

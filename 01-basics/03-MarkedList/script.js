@@ -41,28 +41,18 @@ createApp({
     getNewEmailsArray() {
       let result = [];
       emails.map((email) => {
-          let item = {
-            name: email,
-            flag: '',
-          }
-          result.push(item);
-       })
-      return result;
-    },
-   },
-
-  watch: {
-    search(newValue, oldValue) {
-      this.getNewEmailsArray.map((item) => {
         if(this.search === '') {
-          item.flag = '';
-        } else if(item.name.toLowerCase().includes(this.search.toLowerCase())) {
-          item.flag = 'marked';
+          result.push({name: email, flag: ''});
+        } else if(email.toLowerCase().includes(this.search.toLowerCase())) {
+          result.push({name: email, flag: 'marked'});
         } else {
-          item.flag = '';
+          result.push({name: email, flag: ''});
         }
       });
-    }
-  }
+      return result;
+    },
+   }
+
+
 
 }).mount("#app");
