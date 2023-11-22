@@ -14,8 +14,7 @@ export default defineComponent({
 
   methods: {
     incrCount(count) {
-      count = ++count;
-      this.$emit('update:count', count);
+      this.$emit('update:count', ++count);
     },
   },
 
