@@ -10,22 +10,19 @@ export default defineComponent({
       required: true,
     },
   },
-  data() {
-    return {
-      agendaItemDefaultTitles,
-      agendaItemIcons,
-    }
-  },
+
+  agendaItemIcons,
+  agendaItemDefaultTitles,
 
 
   template: `
     <div class="agenda-item">
       <div class="agenda-item__col">
-        <img :src="'/assets/icons/icon-' + agendaItemIcons[agendaItem.type] + '.svg'" class="icon" alt="key" />
+        <img :src="'/assets/icons/icon-' + $options.agendaItemIcons[agendaItem.type] + '.svg'" class="icon" alt="key" />
       </div>
       <div class="agenda-item__col">{{ agendaItem.startsAt }} - {{ agendaItem.endsAt }}</div>
       <div class="agenda-item__col">
-        <h3 class="agenda-item__title">{{ agendaItem.title ? agendaItem.title : agendaItemDefaultTitles[agendaItem.type] }}</h3>
+        <h3 class="agenda-item__title">{{ agendaItem.title ? agendaItem.title : $options.agendaItemDefaultTitles[agendaItem.type] }}</h3>
         <p v-if="agendaItem.speaker || agendaItem.language" class="agenda-item__talk">
           <span>{{ agendaItem?.speaker }}</span>
           <span v-if="agendaItem.speaker" class="agenda-item__dot"></span>
