@@ -34,37 +34,32 @@ export default defineComponent({
   data() {
     return {
       meetup: null,
-      errorMessage: '',
+      errorMessage: null,
     }
   },
+
   fetchMeetupById,
 
-  mounted() {
-    fetchMeetupById(this.meetupId).then((meetup) => {
-      try {
+  methods: {
+    getMeetupById() {
+      fetchMeetupById(this.meetupId).then((meetup) => {
         this.meetup = meetup;
-      } catch(error) {
-        alert(error)
+    }).catch((error) => {
         this.meetup = null;
-        this.errorMessage = error;
-      }
-    });
-    },
+        this.errorMessage = error.message;
+    })
+  },
+},
 
   watch: {
-    meetupId(newValue, oldValue) {
-      fetchMeetupById(this.meetupId).then((meetup) => {
-        try {
-          this.meetup = meetup;
-        } catch(error) {
-          alert(error)
-          this.meetup = null;
-          this.errorMessage = error;
-        }
-      });
+    meetupId() {
+      this.getMeetupById(this.meetupId);
     },
   },
 
+  created() {
+    this.getMeetupById(this.meetupId);
+  },
 
   template: `
     <div class="page-meetup">
@@ -75,7 +70,7 @@ export default defineComponent({
       </UiContainer>
 
       <UiContainer>
-        <UiAlert v-if="errorMessage">{{ errorMessage }}</UiAlert>
+        <UiAlert :text="errorMessage"></UiAlert>
       </UiContainer>
     </div>`,
 });
