@@ -40,37 +40,44 @@ export default defineComponent({
 
   fetchMeetupById,
 
-  methods: {
-    getMeetupById() {
-      fetchMeetupById(this.meetupId).then((meetup) => {
-        this.meetup = meetup;
-    }).catch((error) => {
-        this.meetup = null;
-        this.errorMessage = error.message;
-    })
-  },
-},
-
-  watch: {
-    meetupId() {
-      this.getMeetupById(this.meetupId);
-    },
-  },
-
   created() {
     this.getMeetupById(this.meetupId);
   },
+
+  watch: {
+    meetupId: {
+      handler: 'getMeetupById',
+      immediate: true,
+    },
+  },
+
+
+    methods: {
+      async getMeetupById() {
+        this.meetup = null;
+        try {
+          this.meetup = await fetchMeetupById(this.meetupId);
+        } catch (error) {
+          this.meetup = null;
+          this.errorMessage = error.message;
+      }
+    },
+  },
+
+
 
   template: `
     <div class="page-meetup">
       <MeetupView v-if="meetup" :meetup="meetup" />
 
-      <UiContainer v-else>
+      <UiContainer v-else-if="meetup === null && errorMessage === null">
         <UiAlert>Загрузка...</UiAlert>
       </UiContainer>
 
-      <UiContainer>
+      <UiContainer v-else>
         <UiAlert :text="errorMessage"></UiAlert>
       </UiContainer>
     </div>`,
 });
+
+
