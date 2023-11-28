@@ -12,7 +12,13 @@ export default defineComponent({
 
   emits: ['update:count'],
 
+  computed: {
+    incr() {
+      return this.count + 1;
+    }
+  },
+
   // Компонент должен иметь входной параметр и порождать событие
 
-  template: `<button @click=this.$emit('update:count',++this.count); type="button">{{ count }}</button>`,
+  template: `<button @click = "this.$emit('update:count', incr)" type="button">{{ incr }}</button>`,
 });
