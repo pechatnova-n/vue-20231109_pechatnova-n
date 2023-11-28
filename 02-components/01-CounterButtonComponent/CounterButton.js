@@ -20,5 +20,5 @@ export default defineComponent({
 
   // Компонент должен иметь входной параметр и порождать событие
 
-  template: `<button @click = "this.$emit('update:count', incr)" type="button">{{ incr }}</button>`,
+  template: `<button @click = "this.$emit('update:count', incr)" type="button">{{ count }}</button>`,
 });
