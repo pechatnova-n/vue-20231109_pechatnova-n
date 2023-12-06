@@ -14,25 +14,35 @@
     <div v-show="isOpened" class="dropdown__menu" role="listbox">
       <button v-for="option in options"
               :value="option.value"
+              :key="option.value"
               class="dropdown__item"
               :class="{ 'dropdown__item_icon': checkHasIcon }"
               role="option"
               type="button"
               @click="changeSelectedOption(option)"
-
       >
 
         <UiIcon v-if="option.icon" :icon="option.icon" class="dropdown__icon" />
        {{ option.text }}
       </button>
-
-
     </div>
+
   </div>
+  <select v-show="false" v-model="hiddenSelectValue">
+    <option
+      v-for="option in options"
+      :key="option.value"
+      :value="option.value"
+
+    >
+      {{ option.text }}
+    </option>
+  </select>
 </template>
 
 <script>
 import UiIcon from './UiIcon.vue';
+
 
 
 export default {
@@ -41,6 +51,7 @@ export default {
   data() {
     return {
       isOpened: false,
+      hiddenSelectValue: this.modelValue,
     }
   },
 
@@ -79,6 +90,19 @@ export default {
     },
     checkHasIcon() {
       return this.options.some(item => 'icon' in item);
+    },
+  },
+
+  watch: {
+    hiddenSelectValue: {
+      handler(newValue) {
+        this.$emit('update:modelValue', newValue);
+      },
+    },
+    modelValue: {
+      handler(newValue) {
+        this.hiddenSelectValue = newValue;
+      },
     },
   },
 
