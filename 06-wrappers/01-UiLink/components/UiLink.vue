@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag || 'router-link'" class="link">
+  <component :is="tag" class="link">
     <slot />
   </component>
 </template>
@@ -11,6 +11,7 @@ export default {
   props: {
     tag: {
       type: [String, Object],
+      default: 'router-link',
     }
   },
 };
