@@ -1,7 +1,7 @@
 <template>
   <component :is="tag"
              class="button"
-             :class="[ {'button_block': block}, { [createClassName]: variant} ]"
+             :class="[ {'button_block': block}, createClassName ]"
              :type="checkType"
   >
     <slot />
