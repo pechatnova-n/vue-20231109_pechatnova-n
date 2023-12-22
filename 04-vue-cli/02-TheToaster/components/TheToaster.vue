@@ -19,15 +19,20 @@ export default {
   data() {
     return {
       allToasts: [],
+      number: 0,
     }
   },
 
   components: {UiToast, UiIcon },
 
   methods: {
+    increment() {
+      this.number++;
+    },
     success(message) {
+      this.increment();
       let item = {
-        id: Date.now(),
+        id: this.number,
         type: 'success',
         message: message,
       }
@@ -38,8 +43,9 @@ export default {
     },
 
     error(message) {
+      this.increment();
       let item = {
-        id: Date.now(),
+        id: this.number,
         type: 'error',
         message: message,
       }
@@ -64,14 +70,6 @@ export default {
   white-space: pre-wrap;
   z-index: 999;
 }
-
-@media all and (min-width: 992px) {
-  .toasts {
-    bottom: 72px;
-    right: 112px;
-  }
-}
-
 .toast {
   display: flex;
   flex: 0 0 auto;
@@ -84,21 +82,5 @@ export default {
   font-size: 18px;
   line-height: 28px;
   width: auto;
-}
-
-.toast + .toast {
-  margin-top: 20px;
-}
-
-.toast__icon {
-  margin-right: 12px;
-}
-
-.toast.toast_success {
-  color: var(--green);
-}
-
-.toast.toast_error {
-  color: var(--red);
 }
 </style>
