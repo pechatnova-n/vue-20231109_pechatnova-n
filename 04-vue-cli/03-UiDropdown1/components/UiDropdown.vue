@@ -4,10 +4,10 @@
       type="button"
       @click="toggleOptions"
       class="dropdown__toggle"
-      :class="{'dropdown__toggle_icon': checkHasIcon}"
+      :class="{'dropdown__toggle_icon': includeIcon}"
       >
-      <UiIcon v-if="getSelectedOption?.icon" :icon="getSelectedOption?.icon" class="dropdown__icon" />
-      <span>{{ getSelectedOption?.text || title }}</span>
+      <UiIcon v-if="selectedOption?.icon" :icon="selectedOption?.icon" class="dropdown__icon" />
+      <span>{{ selectedOption?.text || title }}</span>
     </button>
 
 
@@ -16,7 +16,7 @@
               :value="option.value"
               :key="option.value"
               class="dropdown__item"
-              :class="{ 'dropdown__item_icon': checkHasIcon }"
+              :class="{ 'dropdown__item_icon': includeIcon }"
               role="option"
               type="button"
               @click="changeSelectedOption(option)"
@@ -85,10 +85,10 @@ export default {
   },
 
   computed: {
-    getSelectedOption() {
+    selectedOption() {
       return this.options.find(item => item.value === this.modelValue);
     },
-    checkHasIcon() {
+    includeIcon() {
       return this.options.some(item => 'icon' in item);
     },
   },
