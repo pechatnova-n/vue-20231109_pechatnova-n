@@ -6,7 +6,7 @@
       {'input-group_icon-right': includeRightIcon()},
   ]"
   >
-    <div v-if="this.$slots['left-icon']" class="input-group__icon">
+    <div v-if="$slots['left-icon']" class="input-group__icon">
       <slot name="left-icon" />
     </div>
 
@@ -21,7 +21,7 @@
     >
     </component>
 
-    <div v-if="this.$slots['right-icon']" class="input-group__icon">
+    <div v-if="$slots['right-icon']" class="input-group__icon">
       <slot name="right-icon" />
     </div>
   </div>
@@ -49,7 +49,7 @@ export default {
 
   methods: {
     includeLeftIcon() {
-      return !!this.$slots['left-icon'];
+      return !! this.$slots['left-icon'];
     },
     includeRightIcon() {
       return !!this.$slots['right-icon'];
