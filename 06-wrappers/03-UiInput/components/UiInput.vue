@@ -55,7 +55,7 @@ export default {
       return !!this.$slots['right-icon'];
     },
     includeIcon(){
-      return !!(this.includeLeftIcon || this.includeRightIcon)
+      return !!(this.includeLeftIcon() || this.includeRightIcon())
     },
     emitValue(e) {
       if(this.$props.modelModifiers.lazy) {
