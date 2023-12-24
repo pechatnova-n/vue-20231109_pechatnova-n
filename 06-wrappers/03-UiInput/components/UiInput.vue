@@ -1,13 +1,28 @@
 <template>
-  <div class="input-group input-group_icon input-group_icon-left input-group_icon-right">
-    <div class="input-group__icon">
-      <img class="icon" alt="icon" />
+  <div :class="[
+    'input-group',
+      {'input-group_icon': includeIcon()},
+      {'input-group_icon-left': includeLeftIcon()},
+      {'input-group_icon-right': includeRightIcon()},
+  ]"
+  >
+    <div v-if="this.$slots['left-icon']" class="input-group__icon">
+      <slot name="left-icon" />
     </div>
 
-    <input ref="input" class="form-control form-control_rounded form-control_sm" />
+    <component
+          :is="typeInput"
+           ref="input"
+           :value="modelValue"
+           v-bind="$attrs"
+           @input="emitValue"
+           @change="changeValue"
+           :class="[ {'form-control_rounded' : rounded}, {'form-control_sm' : small}, 'form-control' ]"
+    >
+    </component>
 
-    <div class="input-group__icon">
-      <img class="icon" alt="icon" />
+    <div v-if="this.$slots['right-icon']" class="input-group__icon">
+      <slot name="right-icon" />
     </div>
   </div>
 </template>
@@ -15,6 +30,59 @@
 <script>
 export default {
   name: 'UiInput',
+
+  inheritAttrs: false,
+
+  data() {
+    return {
+      localValue: null,
+    }
+  },
+
+  props: {
+    small: String,
+    rounded: Boolean,
+    multiline: Boolean,
+    modelValue: String,
+    modelModifiers: { default: () => ({}) },
+  },
+
+  methods: {
+    includeLeftIcon() {
+      return !!this.$slots['left-icon'];
+    },
+    includeRightIcon() {
+      return !!this.$slots['right-icon'];
+    },
+    includeIcon(){
+      return !!(this.includeLeftIcon || this.includeRightIcon)
+    },
+    emitValue(e) {
+      if(this.$props.modelModifiers.lazy) {
+        console.log('lazy')
+      } else {
+        this.$emit('update:modelValue', e.target.value);
+      }
+    },
+    changeValue(e) {
+      if(this.$props.modelModifiers.lazy) {
+        this.localValue = e.target.value;
+        this.$emit('update:modelValue', this.localValue);
+      }
+    },
+    focus(){
+      this.$refs.input.focus();
+    },
+  },
+
+
+  computed: {
+    typeInput() {
+      return this.multiline ?'textarea' : 'input';
+    },
+  },
+
+  emits: ['update:modelValue'],
 };
 </script>
 
