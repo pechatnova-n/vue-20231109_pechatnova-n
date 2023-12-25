@@ -58,14 +58,14 @@ export default {
       return !!(this.includeLeftIcon() || this.includeRightIcon())
     },
     emitValue(e) {
-      if(this.$props.modelModifiers.lazy) {
-        console.log('lazy')
+      if(this.modelModifiers.lazy) {
+        return false;
       } else {
         this.$emit('update:modelValue', e.target.value);
       }
     },
     changeValue(e) {
-      if(this.$props.modelModifiers.lazy) {
+      if(this.modelModifiers.lazy) {
         this.localValue = e.target.value;
         this.$emit('update:modelValue', this.localValue);
       }
