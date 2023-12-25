@@ -33,12 +33,6 @@ export default {
 
   inheritAttrs: false,
 
-  data() {
-    return {
-      localValue: null,
-    }
-  },
-
   props: {
     small: String,
     rounded: Boolean,
@@ -66,8 +60,7 @@ export default {
     },
     changeValue(e) {
       if(this.modelModifiers.lazy) {
-        this.localValue = e.target.value;
-        this.$emit('update:modelValue', this.localValue);
+        this.$emit('update:modelValue', e.target.value);
       }
     },
     focus(){
