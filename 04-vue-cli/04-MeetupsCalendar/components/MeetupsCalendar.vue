@@ -2,159 +2,22 @@
   <div class="calendar-view">
     <div class="calendar-view__controls">
       <div class="calendar-view__controls-inner">
-        <button class="calendar-view__control-left" type="button" aria-label="Previous month"></button>
-        <div class="calendar-view__date">Декабрь 2022 г.</div>
-        <button class="calendar-view__control-right" type="button" aria-label="Next month"></button>
+        <button class="calendar-view__control-left" type="button" aria-label="Previous month"
+                @click="changeMonth(false)"></button>
+        <div class="calendar-view__date">{{ monthYearName }}</div>
+        <button class="calendar-view__control-right" type="button" aria-label="Next month"
+                @click="changeMonth(true)"></button>
       </div>
     </div>
 
     <div class="calendar-view__grid">
-      <div class="calendar-view__cell calendar-view__cell_inactive" tabindex="0">
-        <div class="calendar-view__cell-day">28</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell calendar-view__cell_inactive" tabindex="0">
-        <div class="calendar-view__cell-day">29</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell calendar-view__cell_inactive" tabindex="0">
-        <div class="calendar-view__cell-day">30</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">1</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">2</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">3</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">4</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <!-- -->
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">5</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">6</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">7</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">8</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">9</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">10</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">11</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <!-- -->
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">12</div>
+      <div v-for="day in getDays" :key="day['date']" class="calendar-view__cell"
+           :class="{ 'calendar-view__cell_inactive': !day['active'] }" tabindex="0">
+        <div class="calendar-view__cell-day">{{ day['date'].getDate() }}</div>
         <div class="calendar-view__cell-content">
-          <a href="/meetups/1" class="calendar-event">Meetup 1</a>
-          <a href="/meetups/2" class="calendar-event">Meetup 2</a>
+          <a v-for="meetup in filterMeetups(day['date'])" :key="meetup.id" :href="`/meetups/${meetup.id}`"
+             class="calendar-event">{{ meetup.title }}</a>
         </div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">13</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">14</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">15</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">16</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">17</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">18</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <!-- -->
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">19</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">20</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">21</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">22</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">23</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">24</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">25</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <!-- -->
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">26</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">27</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">28</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">29</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">30</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell" tabindex="0">
-        <div class="calendar-view__cell-day">31</div>
-        <div class="calendar-view__cell-content"></div>
-      </div>
-      <div class="calendar-view__cell calendar-view__cell_inactive" tabindex="0">
-        <div class="calendar-view__cell-day">1</div>
-        <div class="calendar-view__cell-content"></div>
       </div>
     </div>
   </div>
@@ -164,13 +27,106 @@
 export default {
   name: 'MeetupsCalendar',
 
+  data() {
+    return {
+      date: new Date(),
+    }
+  },
+  days_in_week: 7,
+  week_days: {
+    'monday': 1,
+    'tuesday': 2,
+    'wednesday': 3,
+    'thursday': 4,
+    'friday': 5,
+    'saturday': 6,
+    'sunday': 7
+  },
+
   props: {
     meetups: {
       type: Array,
       required: true,
     },
   },
-};
+
+  methods: {
+    changeMonth(nextMonth) {
+      if (nextMonth === true) {
+        this.date = new Date(this.date.setMonth(this.date.getMonth() + 1, 1));
+      } else {
+        this.date = new Date(this.date.setMonth(this.date.getMonth() - 1, 1));
+      }
+    },
+    getInactiveDays(arMonthDays, dayKey, period) {
+      let dayOfWeek = arMonthDays[dayKey]['date'].getDay() === 0 ? this.$options.week_days['sunday'] : arMonthDays[dayKey]['date'].getDay();
+      let date = new Date(arMonthDays[dayKey]['date']);
+      if (period === 'prev') {
+        if (dayOfWeek !== 1) {
+          for (let day = 1; day < dayOfWeek; day++) {
+            arMonthDays.unshift({
+              'date': new Date(date.setDate(date.getDate() - 1)),
+              'active': false
+            });
+          }
+        }
+        this.startDate = arMonthDays[0]['date'];
+      } else if (period === 'next') {
+        if (dayOfWeek !== 0) {
+          for (let day = dayOfWeek; day < this.$options.days_in_week; day++) {
+            arMonthDays.push({
+              'date': new Date(date.setDate(date.getDate() + 1)),
+              'active': false
+            });
+          }
+        }
+        this.endDate = arMonthDays[arMonthDays.length - 1]['date'];
+      }
+    },
+    filterMeetups(currentDay) {
+      let timeStart = currentDay;
+      let timeEnd = new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate() + 1);
+      let filterMeetups = this.meetups.filter((meetup) => {
+        return (meetup.date >= timeStart.getTime() && meetup.date < timeEnd.getTime());
+      })
+      return filterMeetups;
+    },
+
+
+  },
+  computed: {
+    monthYearName() {
+      return this.date.toLocaleDateString(navigator.language, {
+        month: 'long',
+        year: 'numeric',
+      });
+    },
+    getDays() {
+      let year = this.date.getFullYear();
+      let month = this.date.getMonth();
+      let countDays = new Date(year, (month + 1), 0).getDate();
+      let day = 1;
+      let arMonthDays = [];
+
+      // Заполняем массив текущим месяцем
+      while (day <= countDays) {
+        arMonthDays.push({
+          'date': new Date(year, month, day),
+          'active': true
+        });
+        day++;
+      }
+      // Заполняем массив предыдущим месяцем
+      this.getInactiveDays(arMonthDays, 0, 'prev');
+      // Заполняем массив следующим месяцем
+      this.getInactiveDays(arMonthDays, (arMonthDays.length - 1), 'next');
+
+      return arMonthDays;
+    },
+  },
+
+}
+
 </script>
 
 <style scoped>

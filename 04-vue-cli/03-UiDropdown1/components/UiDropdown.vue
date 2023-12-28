@@ -1,30 +1,114 @@
 <template>
-  <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <UiIcon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+  <div class="dropdown" :class="{ 'dropdown_opened': isOpened }">
+    <button
+      type="button"
+      @click="toggleOptions"
+      class="dropdown__toggle"
+      :class="{'dropdown__toggle_icon': includeIcon}"
+      >
+      <UiIcon v-if="selectedOption?.icon" :icon="selectedOption?.icon" class="dropdown__icon" />
+      <span>{{ selectedOption?.text || title }}</span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <UiIcon icon="tv" class="dropdown__icon" />
-        Option 1
-      </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <UiIcon icon="tv" class="dropdown__icon" />
-        Option 2
+
+    <div v-show="isOpened" class="dropdown__menu" role="listbox">
+      <button v-for="option in options"
+              :value="option.value"
+              :key="option.value"
+              class="dropdown__item"
+              :class="{ 'dropdown__item_icon': includeIcon }"
+              role="option"
+              type="button"
+              @click="changeSelectedOption(option)"
+      >
+
+        <UiIcon v-if="option.icon" :icon="option.icon" class="dropdown__icon" />
+       {{ option.text }}
       </button>
     </div>
+
   </div>
+  <select v-show="false" v-model="hiddenSelectValue">
+    <option
+      v-for="option in options"
+      :key="option.value"
+      :value="option.value"
+
+    >
+      {{ option.text }}
+    </option>
+  </select>
 </template>
 
 <script>
 import UiIcon from './UiIcon.vue';
 
+
+
 export default {
   name: 'UiDropdown',
 
+  data() {
+    return {
+      isOpened: false,
+      hiddenSelectValue: this.modelValue,
+    }
+  },
+
   components: { UiIcon },
+
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+    modelValue: {
+      type: String,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+
+  emits: ['update:modelValue'],
+
+  methods: {
+    toggleOptions() {
+      this.isOpened = ! this.isOpened;
+    },
+
+    changeSelectedOption(option) {
+      this.$emit('update:modelValue', option.value);
+      this.toggleOptions();
+    },
+  },
+
+  computed: {
+    selectedOption() {
+      return this.options.find(item => item.value === this.modelValue);
+    },
+    includeIcon() {
+      return this.options.some(item => 'icon' in item);
+    },
+  },
+
+  watch: {
+    hiddenSelectValue: {
+      handler(newValue) {
+        this.$emit('update:modelValue', newValue);
+      },
+    },
+    modelValue: {
+      handler(newValue) {
+        this.hiddenSelectValue = newValue;
+      },
+    },
+  },
+
+
+
+
 };
 </script>
 
