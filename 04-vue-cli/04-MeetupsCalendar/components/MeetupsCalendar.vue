@@ -30,12 +30,10 @@ export default {
   data() {
     return {
       date: new Date(),
-      startDate: null,
-      endDate: null,
     }
   },
-  DAYS_IN_WEEK: 7,
-  WEEK_DAYS: {
+  days_in_week: 7,
+  week_days: {
     'monday': 1,
     'tuesday': 2,
     'wednesday': 3,
@@ -61,7 +59,7 @@ export default {
       }
     },
     getInactiveDays(arMonthDays, dayKey, period) {
-      let dayOfWeek = arMonthDays[dayKey]['date'].getDay() === 0 ? this.$options.WEEK_DAYS['sunday'] : arMonthDays[dayKey]['date'].getDay();
+      let dayOfWeek = arMonthDays[dayKey]['date'].getDay() === 0 ? this.$options.week_days['sunday'] : arMonthDays[dayKey]['date'].getDay();
       let date = new Date(arMonthDays[dayKey]['date']);
       if (period === 'prev') {
         if (dayOfWeek !== 1) {
@@ -75,7 +73,7 @@ export default {
         this.startDate = arMonthDays[0]['date'];
       } else if (period === 'next') {
         if (dayOfWeek !== 0) {
-          for (let day = dayOfWeek; day < this.$options.DAYS_IN_WEEK; day++) {
+          for (let day = dayOfWeek; day < this.$options.days_in_week; day++) {
             arMonthDays.push({
               'date': new Date(date.setDate(date.getDate() + 1)),
               'active': false
@@ -92,7 +90,9 @@ export default {
         return (meetup.date >= timeStart.getTime() && meetup.date < timeEnd.getTime());
       })
       return filterMeetups;
-    }
+    },
+
+
   },
   computed: {
     monthYearName() {
@@ -105,8 +105,9 @@ export default {
       let year = this.date.getFullYear();
       let month = this.date.getMonth();
       let countDays = new Date(year, (month + 1), 0).getDate();
-      let arMonthDays = [];
       let day = 1;
+      let arMonthDays = [];
+
       // Заполняем массив текущим месяцем
       while (day <= countDays) {
         arMonthDays.push({
@@ -117,12 +118,13 @@ export default {
       }
       // Заполняем массив предыдущим месяцем
       this.getInactiveDays(arMonthDays, 0, 'prev');
-      // Заполняем массив слудующим месяцем
+      // Заполняем массив следующим месяцем
       this.getInactiveDays(arMonthDays, (arMonthDays.length - 1), 'next');
 
       return arMonthDays;
-    }
-  }
+    },
+  },
+
 }
 
 </script>
