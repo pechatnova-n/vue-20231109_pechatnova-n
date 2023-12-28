@@ -1,18 +1,18 @@
 <template>
-  <form class="meetup-form">
+  <form @submit.prevent="this.$emit('submit', klona(this.localMeetup))" class="meetup-form">
     <div class="meetup-form__content">
       <fieldset class="meetup-form__section">
         <UiFormGroup label="Название">
-          <UiInput name="title" />
+          <UiInput v-model="localMeetup.title" name="title" />
         </UiFormGroup>
         <UiFormGroup label="Дата">
-          <UiInputDate type="date" name="date" />
+          <UiInputDate v-model="localMeetup.date" type="date" name="date" />
         </UiFormGroup>
         <UiFormGroup label="Место">
-          <UiInput name="place" />
+          <UiInput v-model="localMeetup.place" name="place" />
         </UiFormGroup>
         <UiFormGroup label="Описание">
-          <UiInput multiline rows="3" name="description" />
+          <UiInput v-model="localMeetup.description" multiline rows="3" name="description" />
         </UiFormGroup>
         <UiFormGroup label="Изображение">
           <!--
@@ -29,16 +29,20 @@
       </fieldset>
 
       <h3 class="meetup-form__agenda-title">Программа</h3>
-      <!--
       <meetup-agenda-item-form
+          v-for="(agendaItem, index) in localMeetup.agenda"
          :key="agendaItem.id"
-         :agenda-item="..."
+         v-model:agenda-item="localMeetup.agenda[index]"
          class="meetup-form__agenda-item"
+          @remove="removeAgendaItem(index)"
        />
-       -->
 
       <div class="meetup-form__append">
-        <button class="meetup-form__append-button" type="button" data-test="addAgendaItem">
+        <button class="meetup-form__append-button"
+                type="button"
+                data-test="addAgendaItem"
+                @click="addAgendaItem"
+        >
           + Добавить этап программы
         </button>
       </div>
@@ -47,15 +51,30 @@
     <div class="meetup-form__aside">
       <div class="meetup-form__aside-stick">
         <!-- data-test атрибуты используются для поиска нужного элемента в тестах, не удаляйте их -->
-        <ui-button variant="secondary" block class="meetup-form__aside-button" data-test="cancel">Отмена</ui-button>
-        <ui-button variant="primary" block class="meetup-form__aside-button" data-test="submit" type="submit">
-          SUBMIT
+        <ui-button
+          variant="secondary"
+          block class="meetup-form__aside-button"
+          data-test="cancel"
+          @click="this.$emit('cancel')"
+        >
+          Отмена
+        </ui-button>
+        <ui-button
+          variant="primary"
+          block class="meetup-form__aside-button"
+          data-test="submit"
+          type="submit"
+          @click="this.$emit('submit', klona(this.localMeetup))"
+        >
+          {{ submitText }}
         </ui-button>
       </div>
     </div>
   </form>
 </template>
 
+
+<!---->
 <script>
 import MeetupAgendaItemForm from './MeetupAgendaItemForm.vue';
 import UiButton from './UiButton.vue';
@@ -63,7 +82,8 @@ import UiFormGroup from './UiFormGroup.vue';
 import UiImageUploader from './UiImageUploader.vue';
 import UiInput from './UiInput.vue';
 import UiInputDate from './UiInputDate.vue';
-// import { createAgendaItem } from '../meetupService.js';
+import { createAgendaItem } from '../meetupService.js';
+import {klona} from "klona";
 
 export default {
   name: 'MeetupForm',
@@ -88,6 +108,39 @@ export default {
       default: '',
     },
   },
+
+  data() {
+    return {
+     localMeetup: klona(this.meetup),
+    }
+  },
+
+  methods: {
+    klona,
+    addAgendaItem() {
+      if(this.localMeetup.agenda.length > 0) {
+        this.localMeetup.agenda.push(createAgendaItem());
+        this.localMeetup.agenda[this.localMeetup.agenda.length -1].startsAt = this.localMeetup.agenda[this.localMeetup.agenda.length -2].endsAt;
+      } else {
+          this.localMeetup.agenda.push(createAgendaItem());
+      }
+    },
+    removeAgendaItem(index) {
+      this.localMeetup.agenda.splice(index, 1);
+    },
+  },
+
+  watch: {
+    localMeetup: {
+      deep: true,
+      handler() {
+        this.$emit('update:meetup', klona(this.localMeetup));
+      }
+    }
+  },
+
+  emits: ['update:meetup', 'submit', 'cancel'],
+
 };
 </script>
 
