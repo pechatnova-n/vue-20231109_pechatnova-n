@@ -1,6 +1,8 @@
 <template>
   <div class="pagination-container">
-    <!-- Контент страницы -->
+      <div v-for="(item, key) in activeArray" :key="key">
+        <slot :item="item" />
+      </div>
   </div>
 </template>
 
@@ -25,6 +27,12 @@ export default {
       type: Array,
       required: true,
     },
+  },
+
+  computed: {
+    activeArray() {
+      return this.items.slice((this.page - 1) * this.perPage, this.page * this.perPage);
+    }
   },
 };
 </script>
