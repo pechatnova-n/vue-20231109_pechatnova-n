@@ -17,8 +17,8 @@ export default {
 
   provide() {
     return {
-      modelValue: computed(() => this.modelValue),
-      updateModelValue: (value) => {
+      buttonValue: computed(() => this.modelValue),
+      updateButtonValue: (value) => {
         this.$emit('update:modelValue', value)
       },
     }

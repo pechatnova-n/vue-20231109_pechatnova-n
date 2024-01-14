@@ -13,7 +13,7 @@ export default {
 
   name: 'UiButtonGroupItem',
 
-  inject: ['modelValue', 'updateModelValue'],
+  inject: ['buttonValue', 'updateButtonValue'],
 
   props: {
     value: {
@@ -23,13 +23,13 @@ export default {
 
   computed: {
     isActive() {
-      return this.value === this.modelValue
+      return this.value === this.buttonValue
     }
   },
 
   methods:{
     handleUpdate() {
-      this.updateModelValue(this.value)
+      this.updateButtonValue(this.value)
     }
   },
 
