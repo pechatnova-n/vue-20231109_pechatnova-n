@@ -1,6 +1,6 @@
 <template>
   <main class="mini-messenger">
-    <ul class="messages">
+    <ul class="messages" ref="messagesBlock">
       <li v-for="message in messages" :key="message.id" class="message">
         {{ message.text }}
       </li>
@@ -44,6 +44,17 @@ export default {
       this.newMessage = '';
     },
   },
+
+  watch: {
+    'messages.length': {
+        flush: 'post',
+        handler(newValue) {
+          this.$refs.messagesBlock.scrollTo(0, this.$refs.messagesBlock.scrollHeight);
+      },
+      deep: true,
+    },
+  }
+
 };
 </script>
 
