@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { nextTick } from 'vue';
 let lastId = 0;
 
 export default {
@@ -32,8 +33,16 @@ export default {
   },
 
   methods: {
-    handleSendSubmit() {
+    async handleSendSubmit() {
       this.send();
+
+      await nextTick();
+      this.scrollMessagesToBottom();
+    },
+
+    scrollMessagesToBottom() {
+      const messagesEl = this.$refs['messagesBlock'];
+      messagesEl.scrollTop = messagesEl.scrollHeight - messagesEl.clientHeight;
     },
 
     send() {
@@ -44,16 +53,6 @@ export default {
       this.newMessage = '';
     },
   },
-
-  watch: {
-    'messages.length': {
-        flush: 'post',
-        handler(newValue) {
-          this.$refs.messagesBlock.scrollTo(0, this.$refs.messagesBlock.scrollHeight);
-      },
-      deep: true,
-    },
-  }
 
 };
 </script>
