@@ -1,8 +1,6 @@
 <template>
   <div class="pagination-container">
-      <div v-for="(item, key) in activeArray" :key="key">
-        <slot :item="item" />
-      </div>
+    <slot v-for="(item, key) in activeArray" :key="key" :item="item" />
   </div>
 </template>
 
