@@ -15,6 +15,7 @@
 
 <script>
 import { nextTick } from 'vue';
+
 let lastId = 0;
 
 export default {
@@ -35,8 +36,11 @@ export default {
   methods: {
     async handleSendSubmit() {
       this.send();
-
       await nextTick();
+
+      // Ждём реакции на обновление данных (списка сообщений) и обновления DOM после рендеринга
+      await nextTick();
+      // Прокручиваем список сообщений
       this.scrollMessagesToBottom();
     },
 
