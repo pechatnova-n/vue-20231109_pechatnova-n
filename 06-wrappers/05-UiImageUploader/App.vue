@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="sample container">
+
     <h1>Without uploader</h1>
     <UiImageUploader @select="handleSelect" @remove="handleRemove" />
 
