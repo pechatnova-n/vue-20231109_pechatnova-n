@@ -1,42 +1,34 @@
 <template>
   <fieldset class="agenda-item-form">
-    <button type="button" class="agenda-item-form__remove-button"  @click="$emit('remove')">
+    <button type="button" class="agenda-item-form__remove-button" @click="$emit('remove')">
       <UiIcon icon="trash" />
     </button>
 
     <UiFormGroup>
-      <UiDropdown
-        title="Тип"
-        :options="$options.agendaItemTypeOptions"
-        name="type"
-        v-model="localAgendaItem.type"
-      />
+      <UiDropdown v-model="localAgendaItem.type" title="Тип" :options="$options.agendaItemTypeOptions" name="type" />
     </UiFormGroup>
 
     <div class="agenda-item-form__row">
       <div class="agenda-item-form__col">
         <UiFormGroup label="Начало">
-          <UiInput type="time"
-                   placeholder="00:00"
-                   name="startsAt"
-                   v-model="localAgendaItem.startsAt"
-          />
+          <UiInput v-model="localAgendaItem.startsAt" type="time" placeholder="00:00" name="startsAt" />
         </UiFormGroup>
       </div>
       <div class="agenda-item-form__col">
         <UiFormGroup label="Окончание">
-          <UiInput type="time"
-                   placeholder="00:00"
-                   name="endsAt"
-                   v-model="localAgendaItem.endsAt"
-          />
+          <UiInput v-model="localAgendaItem.endsAt" type="time" placeholder="00:00" name="endsAt" />
         </UiFormGroup>
       </div>
     </div>
 
-    <UiFormGroup v-for="(spec, field) in $options.agendaItemFormSchemas[localAgendaItem.type]" :key="field" :label="spec.label">
-      <component :is="spec.component" v-model="localAgendaItem[field]" v-bind="spec.props" />
+    <UiFormGroup v-for="(item, name) in $options.agendaItemFormSchemas[localAgendaItem.type]" :label="item.label" :key="name">
+      <component
+        :is="item.component"
+        :name="name"
+        v-bind="item.props"
+        v-model="localAgendaItem[name]"/>
     </UiFormGroup>
+
   </fieldset>
 </template>
 
@@ -80,17 +72,6 @@ const talkLanguageOptions = [
   { value: 'EN', text: 'EN' },
 ];
 
-/**
- * @typedef FormItemSchema
- * @property {string} label
- * @property {string|object} component
- * @property {object} props
- */
-/** @typedef {string} AgendaItemField */
-/** @typedef {string} AgendaItemType */
-/** @typedef {Object.<AgendaItemType, FormItemSchema>} FormSchema */
-
-/** @type FormSchema */
 const commonAgendaItemFormSchema = {
   title: {
     label: 'Нестандартный текст (необязательно)',
@@ -101,7 +82,6 @@ const commonAgendaItemFormSchema = {
   },
 };
 
-/** @type {Object.<AgendaItemField, FormSchema>} */
 const agendaItemFormSchemas = {
   registration: commonAgendaItemFormSchema,
   opening: commonAgendaItemFormSchema,
@@ -161,12 +141,14 @@ const agendaItemFormSchemas = {
   },
 };
 
+
 export default {
   name: 'MeetupAgendaItemForm',
 
   components: { UiIcon, UiFormGroup, UiInput, UiDropdown },
 
   agendaItemTypeOptions,
+  talkLanguageOptions,
   agendaItemFormSchemas,
 
   props: {
